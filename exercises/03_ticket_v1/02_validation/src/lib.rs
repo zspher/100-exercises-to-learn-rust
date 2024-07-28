@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 struct Ticket {
     title: String,
     description: String,
@@ -5,7 +6,7 @@ struct Ticket {
 }
 
 impl Ticket {
-    // TODO: implement the `new` function.
+    //  implement the `new` function.
     //  The following requirements should be met:
     //   - Only `To-Do`, `In Progress`, and `Done` statuses are allowed.
     //   - The `title` and `description` fields should not be empty.
