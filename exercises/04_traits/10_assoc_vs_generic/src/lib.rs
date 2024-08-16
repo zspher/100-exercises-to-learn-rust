@@ -13,6 +13,58 @@
 // You don't have to though: it's perfectly okay to write three separate
 // implementations manually. Venture further only if you're curious.
 
+trait Power<T: Copy> {
+    fn power(self, exp: T) -> Self;
+}
+macro_rules! power_trait_alias {
+    ($to: ty, $exp_type: ty) => {
+        impl Power<$exp_type> for $to {
+            fn power(self, mut exp: $exp_type) -> Self {
+                let mut base: Self = self;
+                let mut acc: Self = 1;
+
+                if exp == 0 {
+                    return 1;
+                }
+
+                while exp > 1 {
+                    if (exp & 1) == 1 {
+                        acc *= base;
+                    }
+                    exp /= 2;
+                    base *= base
+                }
+
+                base * acc
+            }
+        }
+        impl Power<&$exp_type> for $to {
+            fn power(self, exp: &$exp_type) -> Self {
+                let mut base: Self = self;
+                let mut acc: Self = 1;
+                let mut exp = *exp;
+
+                if exp == 0 {
+                    return 1;
+                }
+
+                while exp > 1 {
+                    if (exp & 1) == 1 {
+                        acc *= base;
+                    }
+                    exp /= 2;
+                    base *= base
+                }
+
+                base * acc
+            }
+        }
+    };
+}
+
+power_trait_alias!(u32, u16);
+power_trait_alias!(u32, u32);
+
 #[cfg(test)]
 mod tests {
     use super::Power;
